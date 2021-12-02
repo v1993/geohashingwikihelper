@@ -1,0 +1,6 @@
+
+namespace Config {
+	#define GETTEXT_PACKAGE "@GETTEXT_PACKAGE@"
+	#define LOCALE_DIR "@LOCALE_DIR@"
+}
+

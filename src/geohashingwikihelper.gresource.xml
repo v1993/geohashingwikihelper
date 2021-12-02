@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/v1993/geohashingwikihelper">
+    <file>MainWindow.ui</file>
+    <file>HashPopover.ui</file>
+    <file>AccountPopover.ui</file>
+    <file>GalleryTab.ui</file>
+
+    <file>TextListingDialog.ui</file>
+  </gresource>
+</gresources>

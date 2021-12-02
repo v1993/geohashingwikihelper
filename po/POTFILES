@@ -1,0 +1,7 @@
+data/org.v1993.geohashingwikihelper.desktop.in
+data/org.v1993.geohashingwikihelper.appdata.xml.in
+data/org.v1993.geohashingwikihelper.gschema.xml
+src/window.ui
+src/main.vala
+src/window.vala
+
