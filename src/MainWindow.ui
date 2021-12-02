@@ -4,6 +4,7 @@
   <requires lib="gtk+" version="3.24"/>
   <template class="MainWindow" parent="GtkApplicationWindow">
     <property name="can-focus">False</property>
+    <property name="title" translatable="yes">Geohashing Wiki Helper</property>
     <property name="default-width">600</property>
     <property name="default-height">300</property>
     <signal name="delete-event" handler="confirm_exit" swapped="no"/>

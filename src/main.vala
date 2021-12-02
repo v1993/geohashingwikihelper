@@ -32,7 +32,7 @@ public class GHWHApplication : Gtk.Application {
 	public GHWHApplication() {
 		Object(application_id: "org.v1993.geohashingwikihelper", flags: ApplicationFlags.FLAGS_NONE);
 
-		config_directory = GLib.File.new_build_filename(GLib.Environment.get_user_config_dir(), "GeoHashingWikiHelper");
+		config_directory = GLib.File.new_build_filename(GLib.Environment.get_user_config_dir(), "GeohashingWikiHelper");
 		try {
 			config_directory.make_directory_with_parents();
 		} catch (GLib.IOError.EXISTS e) {
