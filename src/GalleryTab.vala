@@ -232,6 +232,7 @@ public class GalleryTab : Gtk.Paned {
 		image = null;
 		image_preview.icon = "view-refresh";
 		load_image.begin(btn.get_file());
+		filename.grab_focus();
 	}
 
 	private string? extension_from_mime_type(string mtype) {
