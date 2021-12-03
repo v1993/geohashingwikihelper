@@ -28,6 +28,9 @@
  * 2. You can't ignore warnings when doing usual upload. This mirrors normal wiki flow.
  */
 
+const string user_agent = "GeohasingWikiHelper/0.1 (https://github.com/v1993/geohashingwikihelper, talk to vyo2003 in geohasing IRC about problems with it) libsoup-2.4";
+const string upload_comment = "Uploaded using Geohasing Wiki Helper";
+
 errordomain MediaWikiError {
 	NETWORK_FAILURE,
 	TOKEN_FAILURE,
@@ -50,7 +53,7 @@ public class MediaWiki : Object {
 		endpoint = endpoint_;
 		session = new Soup.Session();
 
-		session.user_agent = "GeohasingWikiHelper/0.1 (https://github.com/v1993/geohashingwikihelper, talk to vyo2003 in geohasing IRC about problems with it) libsoup-2.4";
+		session.user_agent = user_agent;
 		session.accept_language_auto = true;
 		session.add_feature(jar);
 
@@ -164,6 +167,7 @@ public class MediaWiki : Object {
 		mpart.append_form_string("filename", filename);
 		mpart.append_form_string("token", token);
 		mpart.append_form_string("text", description);
+		mpart.append_form_string("comment", upload_comment);
 
 		var file_headers = new Soup.MessageHeaders(Soup.MessageHeadersType.MULTIPART);
 		var urlencoded_filename = Soup.Form.encode("filename", filename);
@@ -181,6 +185,7 @@ public class MediaWiki : Object {
 		body.insert("filename", filename);
 		body.insert("token", token);
 		body.insert("text", description);
+		body.insert("comment", upload_comment);
 		body.insert("ignorewarnings", "1");
 		body.insert("filekey", filekey);
 		return yield simple_api_request("upload", body);

@@ -316,6 +316,8 @@ public class GalleryTab : Gtk.Paned {
 			string filename = @"$(geohash.to_string()) $(filename.text).$(extension_from_mime_type(image_file_type))";
 
 			var desc = new StringBuilder();
+			// Website uploading adds this regardless of description presence. Just replicate its behavior.
+			desc.append("== Summary ==\n");
 			if (description.text != "") {
 				desc.append(description.text);
 				desc.append_c('\n');
