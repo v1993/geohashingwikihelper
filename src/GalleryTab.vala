@@ -132,6 +132,11 @@ enum UploadedListColumns {
 
 const int gallery_icon_size = 128;
 
+enum GalleryDragTypes {
+	TEXT_PLAIN,
+	TEXT_URI_LIST,
+}
+
 [GtkTemplate (ui = "/org/v1993/geohashingwikihelper/GalleryTab.ui")]
 public class GalleryTab : Gtk.Paned {
 	[GtkChild]
@@ -145,10 +150,6 @@ public class GalleryTab : Gtk.Paned {
 	[GtkChild]
 	private unowned Gtk.FileChooserButton file_chooser;
 	[GtkChild]
-	/*
-	 * This is kinda hacky and only makes adding class from code-side easier,
-	 * but will come in handy if I'll make previews for videos via gstreamer.
-	 */
 	private unowned Gtk.Stack preview_stack;
 
 	[GtkChild]
@@ -180,6 +181,18 @@ public class GalleryTab : Gtk.Paned {
 		uploaded_gallery.item_width = gallery_icon_size;
 
 		notify["valid_image_selected"].connect(update_upload_button_sensitivity);
+
+		var target_list = new Gtk.TargetList(null);
+		target_list.add_uri_targets(GalleryDragTypes.TEXT_URI_LIST);
+		target_list.add_text_targets(GalleryDragTypes.TEXT_PLAIN);
+		Gtk.drag_dest_set(preview_stack, ALL, null, COPY);
+		Gtk.drag_dest_set_target_list(preview_stack, target_list);
+
+		preview_stack.drag_data_received.connect(preview_stack_drag_data_received);
+	}
+
+	private void preview_stack_drag_data_received(Gtk.Widget widget, Gdk.DragContext context, int x, int y, Gtk.SelectionData data, uint type, uint drag_time) {
+		file_chooser.drag_data_received(context, x, y, data, type, drag_time);
 	}
 
 	[GtkCallback]
