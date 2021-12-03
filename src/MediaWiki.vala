@@ -24,7 +24,8 @@
  * If someone will make mediawiki library that we can reasonably use, I'll be more than happy to throw this away.
  *
  * Known flaws (in implemented functionality):
- * 1. Login extensions are not supported, only user+password is
+ * 1. Login extensions are not supported, only user+password is (also, rememberMe).
+ * 2. You can't ignore warnings when doing usual upload. This mirrors normal wiki flow.
  */
 
 errordomain MediaWikiError {

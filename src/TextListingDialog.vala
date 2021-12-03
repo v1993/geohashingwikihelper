@@ -20,16 +20,6 @@
 
 [GtkTemplate (ui = "/org/v1993/geohashingwikihelper/TextListingDialog.ui")]
 public class TextListingDialog : Gtk.Dialog {
-	/*
-	[GtkChild]
-	private unowned Gtk.MenuButton curhash_button;
-	[GtkChild]
-	private unowned Gtk.Label curhash_label;
-	[GtkChild]
-	private unowned Gtk.MenuButton account_button;
-	[GtkChild]
-	private unowned Gtk.Notebook notebook;
-	*/
 	[GtkChild]
 	private unowned Gtk.TextBuffer textbuffer;
 
