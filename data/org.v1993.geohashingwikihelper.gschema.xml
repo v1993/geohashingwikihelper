@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="geohashingwikihelper">
 	<schema id="org.v1993.geohashingwikihelper" path="/org/v1993/geohashingwikihelper/">
+		<key name="lat-neg" type="b">
+			<default>false</default>
+		</key>
+		<key name="lat-abs" type="i">
+			<default>0</default>
+			<range min="0" max="89"/>
+		</key>
+		<key name="lon-neg" type="b">
+			<default>false</default>
+		</key>
+		<key name="lon-abs" type="i">
+			<default>0</default>
+			<range min="0" max="179"/>
+		</key>
 	</schema>
 </schemalist>

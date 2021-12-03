@@ -37,6 +37,8 @@ public class MainWindow : Gtk.ApplicationWindow {
 		curhash_button.popover = hash_popover;
 		account_button.popover = account_popover;
 
+		hash_popover.load_defaults();
+
 		notebook.append_page(new GalleryTab(), new Gtk.Label("Gallery")); // FIXME: I18N?
 	}
 

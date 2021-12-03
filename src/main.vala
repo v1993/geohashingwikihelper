@@ -21,6 +21,7 @@ public class GHWHApplication : Gtk.Application {
 	private Geohashing.SpecificHash? current_hash_real = null;
 	public MediaWiki wiki;
 	public GLib.File config_directory;
+	public GLib.Settings settings;
 	public Geohashing.SpecificHash? current_hash {
 		get { return current_hash_real; }
 		set {
@@ -31,6 +32,7 @@ public class GHWHApplication : Gtk.Application {
 
 	public GHWHApplication() {
 		Object(application_id: "org.v1993.geohashingwikihelper", flags: ApplicationFlags.FLAGS_NONE);
+		settings = new GLib.Settings(application_id);
 
 		config_directory = GLib.File.new_build_filename(GLib.Environment.get_user_config_dir(), "GeohashingWikiHelper");
 		try {

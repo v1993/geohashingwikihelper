@@ -56,6 +56,25 @@ public class HashPopover : Gtk.Popover {
 		hide();
 	}
 
+	public void load_defaults() {
+		var settings = ((GHWHApplication)((MainWindow)get_toplevel()).application).settings;
+
+		lat_neg.active = settings.get_boolean("lat-neg");
+		lat_abs.value = settings.get_int("lat-abs");
+		lon_neg.active = settings.get_boolean("lon-neg");
+		lon_abs.value = settings.get_int("lon-abs");
+	}
+
+	[GtkCallback]
+	private void save_defaults() {
+		var settings = ((GHWHApplication)((MainWindow)get_toplevel()).application).settings;
+
+		 settings.set_boolean("lat-neg", lat_neg.active);
+		 settings.set_int("lat-abs", (int)lat_abs.value);
+		 settings.set_boolean("lon-neg", lon_neg.active);
+		 settings.set_int("lon-abs", (int)lon_abs.value);
+	}
+
 	[GtkCallback]
 	private void globalhash_toggled() {
 		latlon_container.sensitive = !globalhash_switch.active;

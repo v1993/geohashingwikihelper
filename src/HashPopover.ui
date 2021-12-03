@@ -72,7 +72,7 @@
               </packing>
             </child>
             <child>
-              <!-- n-columns=3 n-rows=2 -->
+              <!-- n-columns=3 n-rows=3 -->
               <object class="GtkGrid" id="latlon_container">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
@@ -155,6 +155,20 @@
                   <packing>
                     <property name="left-attach">2</property>
                     <property name="top-attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Set as default graticule</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">True</property>
+                    <signal name="clicked" handler="save_defaults" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">2</property>
+                    <property name="width">3</property>
                   </packing>
                 </child>
               </object>
