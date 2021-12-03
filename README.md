@@ -10,7 +10,7 @@ I believe interface is simple enough to make program fall into "tools that don't
 
 ## Dependencies
 
-This program is written in Vala (0.54) and uses Meson build system. Additionally, the following libraries are required:
+This program is written in Vala (0.54, use [Vala Next PPA](https://launchpad.net/~vala-team/+archive/ubuntu/next) on Ubuntu derivatives) and uses Meson build system. Additionally, the following libraries are required:
 
 * GTK+ 3
 * libsoup-2.4
