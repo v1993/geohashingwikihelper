@@ -22,7 +22,7 @@
  * GTK4 allows to do this with Gtk.Image.
  * TODO: sort out styling stuff, we want to use background of Gtk.Image.
  * Optionally, make it resize image in thread. Will make UI 100% smooth even for stupid big ones.
- * Right now, it's reasonably usable (abeit somewhat laggy) even for biggest images I've found on geohashing wiki.
+ * Right now, it's reasonably usable (abeit somewhat laggy) even for the biggest image I've found on geohashing wiki.
  */
 
 // Resize pixbuf to make it fit into box of specific size.
@@ -156,6 +156,11 @@ public class GalleryTab : Gtk.Paned {
 	[GtkChild]
 	private unowned Gtk.IconView uploaded_gallery;
 
+	[GtkChild]
+	private unowned Gtk.Button gallery_export_button;
+	[GtkChild]
+	private unowned Gtk.Button gallery_clear_button;
+
 	private SimplePreview image_preview;
 
 	private Bytes? image_file_data = null; //< File as loaded from disk
@@ -178,8 +183,13 @@ public class GalleryTab : Gtk.Paned {
 	}
 
 	[GtkCallback]
-	void update_upload_button_sensitivity() {
+	private void update_upload_button_sensitivity() {
 		upload_button.sensitive = valid_image_selected && filename.text_length > 0;
+	}
+
+	private void set_gallery_actions_sensitivity(bool sensitive) {
+		gallery_export_button.sensitive = sensitive;
+		gallery_clear_button.sensitive = sensitive;
 	}
 
 	async void load_image(File file) {
@@ -282,7 +292,6 @@ public class GalleryTab : Gtk.Paned {
 		// reader.end_member();
 	}
 
-	// FIXME: make "upload" button only available when there's text in name input field
 	[GtkCallback]
 	private async void upload() {
 		try {
@@ -360,6 +369,7 @@ Are you sure you want to continue?""" // FIXME: I18N
 			file_chooser.unselect_all();
 			this.filename.text = "";
 			this.description.text = "";
+			set_gallery_actions_sensitivity(true);
 		} catch (GLib.Error e) {
 			var dialog = new Gtk.MessageDialog((Gtk.Window)get_toplevel(),
 							 Gtk.DialogFlags.DESTROY_WITH_PARENT,
@@ -378,7 +388,6 @@ Are you sure you want to continue?""" // FIXME: I18N
 
 	[GtkCallback]
 	private void export() {
-		// TODO
 		var builder = new StringBuilder();
 		uploaded_gallery_list.foreach((model, path, iter) => {
 			string name, desc;
@@ -398,8 +407,27 @@ Are you sure you want to continue?""" // FIXME: I18N
 		});
 
 		var dialog = new TextListingDialog(builder.str, (Gtk.Window)get_toplevel());
-		dialog.set_title("Gallery for export");
+		dialog.set_title("Gallery for export"); // FIXME: I18N
 		dialog.run();
 		dialog.destroy();
+	}
+
+	[GtkCallback]
+	private void clear_gallery() {
+		var dialog = new Gtk.MessageDialog((Gtk.Window)get_toplevel(),
+					 Gtk.DialogFlags.DESTROY_WITH_PARENT,
+					 Gtk.MessageType.WARNING,
+					 Gtk.ButtonsType.YES_NO,
+					 """Are you sure you want to clear gallery?
+Note that it won't remove files from server side.""" // FIXME: I18N
+		);
+
+		var res = (Gtk.ResponseType)dialog.run();
+		dialog.destroy();
+
+		if (res == YES) {
+			uploaded_gallery_list.clear();
+			set_gallery_actions_sensitivity(false);
+		}
 	}
 }

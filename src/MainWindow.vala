@@ -47,7 +47,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 						 Gtk.DialogFlags.DESTROY_WITH_PARENT,
 						 Gtk.MessageType.WARNING,
 						 Gtk.ButtonsType.YES_NO,
-						 "Are you sure you want to exit?"
+						 "Are you sure you want to exit?" // FIXME: I18N
 		);
 
 		var res = (Gtk.ResponseType)dialog.run();

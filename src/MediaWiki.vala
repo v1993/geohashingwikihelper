@@ -54,11 +54,11 @@ public class MediaWiki : Object {
 		session.accept_language_auto = true;
 		session.add_feature(jar);
 
-		// TODO: debug only
-		if (true) {
-			Soup.Logger logger = new Soup.Logger (Soup.LoggerLogLevel.HEADERS, -1);
-			session.add_feature(logger);
-		}
+		// Very useful for debugging communication stuff
+		/*
+		Soup.Logger logger = new Soup.Logger (Soup.LoggerLogLevel.HEADERS, -1);
+		session.add_feature(logger);
+		*/
 	}
 
 	private async Soup.Message do_request(owned Soup.Message msg) {
@@ -186,3 +186,4 @@ public class MediaWiki : Object {
 		return yield simple_api_request("upload", body);
 	}
 }
+
