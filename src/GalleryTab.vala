@@ -322,14 +322,7 @@ public class GalleryTab : Gtk.Paned {
 				desc.append(description.text);
 				desc.append_c('\n');
 			}
-			desc.append(@"[[Category: Meetup on $(geohash.date.to_string())]]");
-			desc.append_c('\n');
-			if (geohash.graticule.is_globalhash) {
-				// Lucky you!
-				desc.append("[[Category: Globalhash]]");
-			} else {
-				desc.append(@"[[Category: Meetup in $(geohash.graticule.to_string())]]");
-			}
+			desc.append(geohash.to_file_tags());
 
 			// Uncomment this and comment out entire part 2 when testing
 			// string wiki_filename = "WIKI_FILENAME.png";

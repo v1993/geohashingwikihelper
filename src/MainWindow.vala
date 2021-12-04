@@ -40,6 +40,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 		hash_popover.load_defaults();
 
 		notebook.append_page(new GalleryTab(), new Gtk.Label("Gallery")); // FIXME: I18N?
+		notebook.append_page(new UtilsTab(), new Gtk.Label("Utils")); // FIXME: I18N?
 	}
 
 	// Ask for confirmation, because a lot of data doesn't persist

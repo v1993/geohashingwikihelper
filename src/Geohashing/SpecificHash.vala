@@ -53,5 +53,24 @@ namespace Geohashing {
 		public string to_string() {
 			return @"$(date.to_string()) $(graticule.to_string())";
 		}
+
+		public string to_file_tags() {
+			var tags = new StringBuilder();
+			{
+				tags.append("[[Category: Meetup on ");
+				tags.append(date.to_string());
+				tags.append("]]");
+			}
+			tags.append_c('\n');
+			if (graticule.is_globalhash) {
+				tags.append("[[Category: Globalhash]]");
+			} else {
+				tags.append("[[Category: Meetup in ");
+				tags.append(graticule.to_string());
+				tags.append("]]");
+			}
+
+			return tags.str;
+		}
 	}
 }

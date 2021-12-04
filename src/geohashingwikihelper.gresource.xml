@@ -5,6 +5,7 @@
     <file>HashPopover.ui</file>
     <file>AccountPopover.ui</file>
     <file>GalleryTab.ui</file>
+    <file>UtilsTab.ui</file>
 
     <file>TextListingDialog.ui</file>
   </gresource>

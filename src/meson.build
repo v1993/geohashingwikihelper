@@ -9,6 +9,7 @@ geohashingwikihelper_sources = [
   'HashPopover.vala',
   'AccountPopover.vala',
   'GalleryTab.vala',
+  'UtilsTab.vala',
   'MediaWiki.vala',
 ]
 
