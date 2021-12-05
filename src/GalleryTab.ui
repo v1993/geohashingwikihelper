@@ -2,11 +2,6 @@
 <!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
-  <object class="GtkAdjustment" id="adjustment1">
-    <property name="upper">100</property>
-    <property name="step-increment">1</property>
-    <property name="page-increment">10</property>
-  </object>
   <object class="GtkFileFilter" id="filefilter1">
     <mime-types>
       <mime-type>image/png</mime-type>
@@ -166,19 +161,26 @@
         <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkIconView" id="uploaded_gallery">
-            <property name="height-request">100</property>
+          <object class="GtkScrolledWindow">
+            <property name="height-request">150</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
-            <property name="margin">6</property>
-            <property name="hexpand">True</property>
-            <property name="vexpand">True</property>
-            <property name="vadjustment">adjustment1</property>
-            <property name="model">uploaded_gallery_list</property>
-            <property name="reorderable">True</property>
+            <property name="hscrollbar-policy">never</property>
+            <property name="shadow-type">in</property>
+            <child>
+              <object class="GtkIconView" id="uploaded_gallery">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="margin">6</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="model">uploaded_gallery_list</property>
+                <property name="reorderable">True</property>
+              </object>
+            </child>
           </object>
           <packing>
-            <property name="expand">True</property>
+            <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">0</property>
           </packing>

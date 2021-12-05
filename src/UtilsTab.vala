@@ -52,7 +52,7 @@ class UtilsTab : Gtk.Box {
 
 	[GtkCallback]
 	void copy_file_tags() {
-		var hash_tags = ((GHWHApplication)((MainWindow)get_toplevel()).application).current_hash.to_file_tags()+"\n";
+		var hash_tags = ((GHWHApplication)((MainWindow)get_toplevel()).application).current_hash.to_file_tags();
 		var clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD);
 		clipboard.set_text(hash_tags, hash_tags.length);
 	}
