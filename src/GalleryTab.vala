@@ -168,7 +168,7 @@ public class GalleryTab : Gtk.Paned {
 	private string? image_file_type = null;
 	private Gdk.Pixbuf? image = null; // Content of current file, decoded
 
-	private bool valid_image_selected { get; set; }
+	public bool valid_image_selected { get; private set; }
 
 	construct {
 		image_preview = new SimplePreview();
@@ -180,7 +180,7 @@ public class GalleryTab : Gtk.Paned {
 		uploaded_gallery.pixbuf_column = UploadedListColumns.ICON;
 		uploaded_gallery.item_width = gallery_icon_size;
 
-		notify["valid_image_selected"].connect(update_upload_button_sensitivity);
+		notify["valid-image-selected"].connect(update_upload_button_sensitivity);
 
 		var target_list = new Gtk.TargetList(null);
 		target_list.add_uri_targets(GalleryDragTypes.TEXT_URI_LIST);
