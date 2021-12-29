@@ -16,8 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// TODO: load previous settings? Location, at least?
-
 [GtkTemplate (ui = "/org/v1993/geohashingwikihelper/HashPopover.ui")]
 public class HashPopover : Gtk.Popover {
 	[GtkChild]
