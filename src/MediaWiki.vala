@@ -28,7 +28,7 @@
  * 2. You can't ignore warnings when doing usual upload. This mirrors normal wiki flow.
  */
 
-const string user_agent = "GeohasingWikiHelper/0.1 (https://github.com/v1993/geohashingwikihelper, talk to vyo2003 in geohasing IRC about problems with it) libsoup-2.4";
+const string user_agent = "GeohasingWikiHelper/0.1 (https://github.com/v1993/geohashingwikihelper, talk to vyo2003 in geohasing IRC about problems with it) libsoup-3.0";
 const string upload_comment = "Uploaded using Geohasing Wiki Helper";
 
 errordomain MediaWikiError {
@@ -64,24 +64,13 @@ public class MediaWiki : Object {
 		*/
 	}
 
-	private async Soup.Message do_request(owned Soup.Message msg) {
-		Soup.Message response = null;
-		SourceFunc callback = do_request.callback;
-		session.queue_message(msg, (sess, mess) => {
-			response = mess;
-			callback();
-		});
-		yield;
-		return response;
-	}
-
-	private Json.Node parse_message(Soup.Message msg) throws GLib.Error {
-		if (msg.response_body.data == null) {
-			throw new MediaWikiError.NETWORK_FAILURE("failed to reach API endpoint");
-		}
+	private async Json.Node perform_request(Soup.Message msg) throws GLib.Error {
+		// TODO: add cancellable
+		var response_stream = yield session.send_async(msg, Priority.DEFAULT, null);
 
 		var parser = new Json.Parser();
-		parser.load_from_data((string)msg.response_body.data, (ssize_t)msg.response_body.length);
+		// TODO: add cancellable
+		parser.load_from_stream(response_stream, null);
 		var root = parser.get_root();
 		return (owned)root;
 	}
@@ -92,12 +81,10 @@ public class MediaWiki : Object {
 	}
 
 	private async Json.Node simple_api_request(string action, GLib.HashTable<string, string> body) throws GLib.Error {
-		var msg = new Soup.Message("POST", endpoint);
 		add_common_params(action, body);
 		var encoded = Soup.Form.encode_hash(body);
-		msg.set_request(Soup.FORM_MIME_TYPE_URLENCODED, Soup.MemoryUse.TEMPORARY, encoded.data);
-		var resp = yield do_request(msg);
-		return parse_message(resp);
+		var msg = new Soup.Message.from_encoded_form("POST", endpoint, (owned)encoded);
+		return yield perform_request(msg);
 	}
 
 	private async string get_token(string type = "csrf") throws GLib.Error {
@@ -154,12 +141,16 @@ public class MediaWiki : Object {
 		assert_nonnull(jar);
 
 		// Since we may share session with others in the future, only remove our own cookies.
-		foreach (var cookie in jar.get_cookie_list(new Soup.URI(endpoint), true)) {
-			jar.delete_cookie(cookie);
+		try {
+			foreach (var cookie in jar.get_cookie_list(Uri.parse(endpoint, Soup.HTTP_URI_FLAGS), true)) {
+				jar.delete_cookie(cookie);
+			}
+		} catch(UriError e) {
+			critical("Failed to purge session");
 		}
 	}
 
-	public async Json.Node upload_file(string filename, uint8[] data, string description) throws GLib.Error {
+	public async Json.Node upload_file(string filename, Bytes data, string description) throws GLib.Error {
 		var token = yield get_token();
 		var mpart = new Soup.Multipart("multipart/form-data");
 		mpart.append_form_string("action", "upload");
@@ -169,14 +160,10 @@ public class MediaWiki : Object {
 		mpart.append_form_string("text", description);
 		mpart.append_form_string("comment", upload_comment);
 
-		var file_headers = new Soup.MessageHeaders(Soup.MessageHeadersType.MULTIPART);
-		var urlencoded_filename = Soup.Form.encode("filename", filename);
-		file_headers.set_content_disposition(@"form-data; name=\"file\"; $urlencoded_filename", null);
-		var buffer = new Soup.Buffer.with_owner(data, null, null);
-		mpart.append_part(file_headers, buffer);
+		mpart.append_form_file("file", filename, null, data);
 
-		var message = Soup.Form.request_new_from_multipart(endpoint, mpart);
-		return parse_message(yield do_request(message));
+		var message = new Soup.Message.from_multipart(endpoint, mpart);
+		return yield perform_request(message);
 	}
 
 	public async Json.Node complete_stashed_upload(string filename, string filekey, string description) throws GLib.Error {

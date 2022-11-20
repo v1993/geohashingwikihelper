@@ -13,7 +13,8 @@ I believe interface is simple enough to make program fall into "tools that don't
 This program is written in Vala (0.54, use [Vala Next PPA](https://launchpad.net/~vala-team/+archive/ubuntu/next) on Ubuntu derivatives) and uses Meson build system. Additionally, the following libraries are required:
 
 * GTK+ 3
-* libsoup-2.4 (and glib-networking at runtime for TLS support)
+* libsoup-3.0 (and glib-networking at runtime for TLS support)
 * json-glib-1.0
 
 It should be fully compatible with every platform that those libraries support (Linux, Windows, OS X), but only was tested on Linux.
+

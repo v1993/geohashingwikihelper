@@ -328,7 +328,7 @@ public class GalleryTab : Gtk.Paned {
 			// string wiki_filename = "WIKI_FILENAME.png";
 
 			// Send request
-			var json = yield wiki.upload_file(filename, image_file_data.get_data(), desc.str);
+			var json = yield wiki.upload_file(filename, image_file_data, desc.str);
 
 			// Part 2: parse upload result
 			string wiki_filename;
