@@ -75,64 +75,76 @@ public class MediaWiki : Object {
 		return (owned)root;
 	}
 
-	private void add_common_params(string action, GLib.HashTable<string, string> body) {
-		body.insert("action", action);
-		body.insert("format", "json");
+	private void add_common_params(string action, GLib.Datalist<string> body) {
+		body.set_data("action", action);
+		body.set_data("format", "json");
 	}
 
-	private async Json.Node simple_api_request(string action, GLib.HashTable<string, string> body) throws GLib.Error {
+	private async Json.Node simple_api_request(string action, GLib.Datalist<string> body) throws GLib.Error {
 		add_common_params(action, body);
-		var encoded = Soup.Form.encode_hash(body);
+		var encoded = Soup.Form.encode_datalist(body);
 		var msg = new Soup.Message.from_encoded_form("POST", endpoint, (owned)encoded);
 		return yield perform_request(msg);
 	}
 
 	private async string get_token(string type = "csrf") throws GLib.Error {
-		var body = new GLib.HashTable<string, string>(str_hash, str_equal);
-		body.insert("meta", "tokens");
-		body.insert("type", type);
-		var root = yield simple_api_request("query", body);
-		var? token = SimpleJSONQuery("$.query.tokens.*", root)?.get_string();
-		if (token == null) {
-			throw new MediaWikiError.TOKEN_FAILURE(@"failed to obrain token of type $(type)");
+		var body = GLib.Datalist<string>();
+		try {
+			body.set_data("meta", "tokens");
+			body.set_data("type", type);
+			var root = yield simple_api_request("query", body);
+			var? token = SimpleJSONQuery("$.query.tokens.*", root)?.get_string();
+			if (token == null) {
+				throw new MediaWikiError.TOKEN_FAILURE(@"failed to obtain token of type $(type)");
+			}
+			return token;
+		} finally {
+			body.clear();
 		}
-		return token;
 	}
 
 	public async string log_in(string user, string password) throws GLib.Error {
 		string login_token = yield get_token("login");
 
-		var body = new GLib.HashTable<string, string>(str_hash, str_equal);
-		body.insert("logintoken", login_token);
-		body.insert("username", user);
-		body.insert("password", password);
-		// User can always reset session if they want to log out
-		body.insert("rememberMe", "1");
-		// We don't handle redirects anyways, but API requires us to pass this
-		body.insert("loginreturnurl", "https://example.com");
+		var body = GLib.Datalist<string>();
+		try {
+			body.set_data("logintoken", login_token);
+			body.set_data("username", user);
+			body.set_data("password", password);
+			// User can always reset session if they want to log out
+			body.set_data("rememberMe", "1");
+			// We don't handle redirects anyways, but API requires us to pass this
+			body.set_data("loginreturnurl", "https://example.com");
 
-		var resp = yield simple_api_request("clientlogin", body);
-		var? status = SimpleJSONQuery("$.clientlogin.status", resp)?.get_string();
+			var resp = yield simple_api_request("clientlogin", body);
+			var? status = SimpleJSONQuery("$.clientlogin.status", resp)?.get_string();
 
-		if (status != "PASS") {
-			var error_message = SimpleJSONQuery("$.clientlogin.message", resp)?.get_string() ?? "unknow clientlogin API error";
-			throw new MediaWikiError.LOGIN_FAILURE(error_message);
+			if (status != "PASS") {
+				var error_message = SimpleJSONQuery("$.clientlogin.message", resp)?.get_string() ?? "unknow clientlogin API error";
+				throw new MediaWikiError.LOGIN_FAILURE(error_message);
+			}
+
+			return SimpleJSONQuery("$.clientlogin.username", resp)?.get_string();
+		} finally {
+			body.clear();
 		}
-
-		return SimpleJSONQuery("$.clientlogin.username", resp)?.get_string();
 	}
 
 	public async string? get_current_user() throws GLib.Error {
-		var body = new GLib.HashTable<string, string>(str_hash, str_equal);
-		body.insert("meta", "userinfo");
-		var root = yield simple_api_request("query", body);
+		var body = GLib.Datalist<string>();
+		try {
+			body.set_data("meta", "userinfo");
+			var root = yield simple_api_request("query", body);
 
-		// If we aren't logged in, name is set to IP address.
-		// Check anon to ensure we actually are logged in.
-		if (SimpleJSONQuery("$.query.userinfo.anon", root)?.get_string() == null) {
-			return SimpleJSONQuery("$.query.userinfo.name", root)?.get_string();
-		} else {
-			return null;
+			// If we aren't logged in, name is set to IP address.
+			// Check anon to ensure we actually are logged in.
+			if (SimpleJSONQuery("$.query.userinfo.anon", root)?.get_string() == null) {
+				return SimpleJSONQuery("$.query.userinfo.name", root)?.get_string();
+			} else {
+				return null;
+			}
+		} finally {
+			body.clear();
 		}
 	}
 
@@ -168,14 +180,18 @@ public class MediaWiki : Object {
 
 	public async Json.Node complete_stashed_upload(string filename, string filekey, string description) throws GLib.Error {
 		var token = yield get_token();
-		var body = new GLib.HashTable<string, string>(str_hash, str_equal);
-		body.insert("filename", filename);
-		body.insert("token", token);
-		body.insert("text", description);
-		body.insert("comment", upload_comment);
-		body.insert("ignorewarnings", "1");
-		body.insert("filekey", filekey);
-		return yield simple_api_request("upload", body);
+		var body = GLib.Datalist<string>();
+		try {
+			body.set_data("filename", filename);
+			body.set_data("token", token);
+			body.set_data("text", description);
+			body.set_data("comment", upload_comment);
+			body.set_data("ignorewarnings", "1");
+			body.set_data("filekey", filekey);
+			return yield simple_api_request("upload", body);
+		} finally {
+			body.clear();
+		}
 	}
 }
 
