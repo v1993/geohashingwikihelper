@@ -311,8 +311,8 @@ public class GalleryTab : Gtk.Paned {
 		try {
 			// Part 1: prepare and perform upload
 			uploading_part_container.sensitive = false;
-			var geohash = ((GHWHApplication)((MainWindow)get_toplevel()).application).current_hash;
-			var wiki = ((GHWHApplication)((MainWindow)get_toplevel()).application).wiki;
+			var geohash = new GHWHApplication().current_hash;
+			var wiki = new GHWHApplication().wiki;
 			string filename = @"$(geohash.to_string()) $(filename.text).$(extension_from_mime_type(image_file_type))";
 
 			var desc = new StringBuilder();

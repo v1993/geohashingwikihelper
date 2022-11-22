@@ -22,7 +22,7 @@
 class UtilsTab : Gtk.Box {
 	[GtkCallback]
 	void copy_geohash() {
-		var hash_id = ((GHWHApplication)((MainWindow)get_toplevel()).application).current_hash.to_string();
+		var hash_id = new GHWHApplication().current_hash.to_string();
 		var clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD);
 		clipboard.set_text(hash_id, hash_id.length);
 	}
@@ -30,7 +30,7 @@ class UtilsTab : Gtk.Box {
 	[GtkCallback]
 	void open_article() {
 		var toplevel = (MainWindow)get_toplevel();
-		var hash_id = ((GHWHApplication)toplevel.application).current_hash.to_string();
+		var hash_id = new GHWHApplication().current_hash.to_string();
 		// Works without replacement too, but let's be a good app
 		hash_id = hash_id.replace(" ", "_");
 		try {
@@ -52,7 +52,7 @@ class UtilsTab : Gtk.Box {
 
 	[GtkCallback]
 	void copy_file_tags() {
-		var hash_tags = ((GHWHApplication)((MainWindow)get_toplevel()).application).current_hash.to_file_tags();
+		var hash_tags = new GHWHApplication().current_hash.to_file_tags();
 		var clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD);
 		clipboard.set_text(hash_tags, hash_tags.length);
 	}

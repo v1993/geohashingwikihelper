@@ -52,8 +52,7 @@ public class AccountPopover : Gtk.Popover {
 
 	[GtkCallback]
 	private void logout() {
-		var wiki = ((GHWHApplication)((MainWindow)get_toplevel()).application).wiki;
-		wiki.purge_session();
+		new GHWHApplication().wiki.purge_session();
 		set_user_label(null);
 	}
 
@@ -62,8 +61,7 @@ public class AccountPopover : Gtk.Popover {
 		status.label = "fetching..."; // FIXME: I18N
 
 		try {
-			var wiki = ((GHWHApplication)((MainWindow)get_toplevel()).application).wiki;
-			set_user_label(yield wiki.get_current_user());
+			set_user_label(yield new GHWHApplication().wiki.get_current_user());
 		} catch(GLib.Error e) {
 			status.label = @"error: $(e.message)"; // FIXME: I18N
 			GLib.Timeout.add(2500, () => {
@@ -81,7 +79,7 @@ public class AccountPopover : Gtk.Popover {
 			string uname = username.text;
 			string pswd = password.text;
 
-			var wiki = ((GHWHApplication)((MainWindow)get_toplevel()).application).wiki;
+			var wiki = new GHWHApplication().wiki;
 			wiki.purge_session();
 			status.label = "logging in..."; // FIXME: I18N
 

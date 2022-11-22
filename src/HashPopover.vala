@@ -49,13 +49,13 @@ public class HashPopover : Gtk.Popover {
 												 lon_neg.active, (int)lon_abs.value);
 		}
 
-		((GHWHApplication)((MainWindow)get_toplevel()).application).current_hash = new Geohashing.SpecificHash(date, graticule);
+		new GHWHApplication().current_hash = new Geohashing.SpecificHash(date, graticule);
 
 		hide();
 	}
 
 	public void load_defaults() {
-		var settings = ((GHWHApplication)((MainWindow)get_toplevel()).application).settings;
+		var settings = new GHWHApplication().settings;
 
 		lat_neg.active = settings.get_boolean("lat-neg");
 		lat_abs.value = settings.get_int("lat-abs");
@@ -65,7 +65,7 @@ public class HashPopover : Gtk.Popover {
 
 	[GtkCallback]
 	private void save_defaults() {
-		var settings = ((GHWHApplication)((MainWindow)get_toplevel()).application).settings;
+		var settings = new GHWHApplication().settings;
 
 		 settings.set_boolean("lat-neg", lat_neg.active);
 		 settings.set_int("lat-abs", (int)lat_abs.value);

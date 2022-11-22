@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
+[SingleInstance]
 public class GHWHApplication : Gtk.Application {
 	private Geohashing.SpecificHash? current_hash_real = null;
 	public MediaWiki wiki;
