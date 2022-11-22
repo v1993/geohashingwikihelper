@@ -150,7 +150,7 @@ public class MediaWiki : Object {
 		}
 	}
 
-	public async Json.Node upload_file(string filename, Bytes data, string description) throws GLib.Error {
+	public async Json.Node upload_file(string filename, string? file_type, Bytes data, string description) throws GLib.Error {
 		var token = yield get_token();
 		var mpart = new Soup.Multipart("multipart/form-data");
 		mpart.append_form_string("action", "upload");
@@ -160,7 +160,7 @@ public class MediaWiki : Object {
 		mpart.append_form_string("text", description);
 		mpart.append_form_string("comment", upload_comment);
 
-		mpart.append_form_file("file", filename, null, data);
+		mpart.append_form_file("file", filename, file_type, data);
 
 		var message = new Soup.Message.from_multipart(endpoint, mpart);
 		return yield perform_request(message);
