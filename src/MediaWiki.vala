@@ -68,7 +68,7 @@ public class MediaWiki : Object {
 		// TODO: add cancellable
 		var response_stream = yield session.send_async(msg, Priority.DEFAULT, null);
 
-		var parser = new Json.Parser();
+		var parser = new Json.Parser.immutable_new();
 		// TODO: add cancellable
 		yield parser.load_from_stream_async(response_stream, null);
 		return parser.steal_root();
