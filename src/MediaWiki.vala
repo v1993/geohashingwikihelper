@@ -70,9 +70,8 @@ public class MediaWiki : Object {
 
 		var parser = new Json.Parser();
 		// TODO: add cancellable
-		parser.load_from_stream(response_stream, null);
-		var root = parser.get_root();
-		return (owned)root;
+		yield parser.load_from_stream_async(response_stream, null);
+		return parser.steal_root();
 	}
 
 	private void add_common_params(string action, GLib.HashTable<string, string> body) {
