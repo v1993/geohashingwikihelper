@@ -57,11 +57,13 @@ public class MediaWiki : Object {
 		session.accept_language_auto = true;
 		session.add_feature(jar);
 
-		// Very useful for debugging communication stuff
-		/*
-		Soup.Logger logger = new Soup.Logger (Soup.LoggerLogLevel.HEADERS, -1);
-		session.add_feature(logger);
-		*/
+		{
+			unowned string? logvar = Environment.get_variable("GHWH_LOG_HEADERS");
+			if (logvar != null && logvar != "0") {
+				Soup.Logger logger = new Soup.Logger (Soup.LoggerLogLevel.HEADERS);
+				session.add_feature(logger);
+			}
+		}
 	}
 
 	private async Json.Node perform_request(Soup.Message msg) throws GLib.Error {
