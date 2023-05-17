@@ -89,7 +89,7 @@ public class AccountPopover : Gtk.Popover {
 		} catch (GLib.Error e) {
 			set_user_label(null);
 
-			var dialog = new Gtk.MessageDialog((Gtk.Window)get_toplevel(),
+			var dialog = new Gtk.MessageDialog(new GHWHApplication().main_window,
 											   Gtk.DialogFlags.DESTROY_WITH_PARENT,
 											   Gtk.MessageType.ERROR,
 											   Gtk.ButtonsType.OK,

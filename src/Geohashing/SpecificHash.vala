@@ -17,20 +17,22 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/*
- * Describes specific hash, that is, date and graticule.
- * Only accepts pre-created objects because of ton of parameters.
- * Consider encoding it as string or passing object around.
- */
-
 namespace Geohashing {
+	/**
+	 * Describes a specific hash, that is, date and graticule.
+	 * Only accepts pre-created objects because of ton of parameters.
+	 * Consider encoding it as a string or passing in object form around.
+	 */
 	public class SpecificHash : Object {
 		public Date date { get; construct set; }
 		public Graticule graticule { get; construct set; }
 
 		public SpecificHash(Date date, Graticule graticule)
 		{
-			Object(date: date, graticule: graticule);
+			Object(
+				date: date,
+				graticule: graticule
+			);
 		}
 
 		public SpecificHash.from_string(string src) {

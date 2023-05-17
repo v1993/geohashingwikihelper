@@ -1,4 +1,4 @@
-/* Galery.vala
+/* GalleryTab.vala
  *
  * Copyright 2021 v1993 <v19930312@gmail.com>
  *
@@ -22,12 +22,12 @@
  * GTK4 allows to do this with Gtk.Image.
  * TODO: sort out styling stuff, we want to use background of Gtk.Image.
  * Optionally, make it resize image in thread. Will make UI 100% smooth even for stupid big ones.
- * Right now, it's reasonably usable (abeit somewhat laggy) even for the biggest image I've found on geohashing wiki.
+ * Right now, it's reasonably usable (albeit somewhat laggy) even for the biggest image I've found on geohashing wiki.
  */
 
-// Resize pixbuf to make it fit into box of specific size.
-// If calculated scale is equal to scale_ex, return null.
-// Pass negative scale if you don't have any yet.
+/// Resize pixbuf to make it fit into box of specific size.
+/// If calculated scale is equal to scale_ex, return null.
+/// Pass negative scale if you don't have any yet.
 Gdk.Pixbuf? fit_image_to_box(Gdk.Pixbuf source_image, int w, int h, ref double scale_ex) {
 	double scale_x = (double)w / (double)source_image.width;
 	double scale_y = (double)h / (double)source_image.height;
@@ -337,7 +337,7 @@ public class GalleryTab : Gtk.Paned {
 				if (!result) {
 					// Upload paused with a warning
 
-					var dialog = new Gtk.MessageDialog((Gtk.Window)get_toplevel(),
+					var dialog = new Gtk.MessageDialog(new GHWHApplication().main_window,
 								 Gtk.DialogFlags.DESTROY_WITH_PARENT,
 								 Gtk.MessageType.WARNING,
 								 Gtk.ButtonsType.YES_NO,
@@ -380,7 +380,7 @@ Are you sure you want to continue?""" // FIXME: I18N
 			this.description.text = "";
 			set_gallery_actions_sensitivity(true);
 		} catch (GLib.Error e) {
-			var dialog = new Gtk.MessageDialog((Gtk.Window)get_toplevel(),
+			var dialog = new Gtk.MessageDialog(new GHWHApplication().main_window,
 							 Gtk.DialogFlags.DESTROY_WITH_PARENT,
 							 Gtk.MessageType.ERROR,
 							 Gtk.ButtonsType.OK,
@@ -415,7 +415,7 @@ Are you sure you want to continue?""" // FIXME: I18N
 			return false;
 		});
 
-		var dialog = new TextListingDialog(builder.str, (Gtk.Window)get_toplevel());
+		var dialog = new TextListingDialog(builder.str, new GHWHApplication().main_window);
 		dialog.set_title("Gallery for export"); // FIXME: I18N
 		dialog.run();
 		dialog.destroy();
@@ -423,7 +423,7 @@ Are you sure you want to continue?""" // FIXME: I18N
 
 	[GtkCallback]
 	private void clear_gallery() {
-		var dialog = new Gtk.MessageDialog((Gtk.Window)get_toplevel(),
+		var dialog = new Gtk.MessageDialog(new GHWHApplication().main_window,
 					 Gtk.DialogFlags.DESTROY_WITH_PARENT,
 					 Gtk.MessageType.WARNING,
 					 Gtk.ButtonsType.YES_NO,

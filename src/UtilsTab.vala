@@ -29,12 +29,11 @@ class UtilsTab : Gtk.Box {
 
 	[GtkCallback]
 	void open_article() {
-		var toplevel = (MainWindow)get_toplevel();
 		var hash_id = new GHWHApplication().current_hash.to_string();
 		// Works without replacement too, but let's be a good app
 		hash_id = hash_id.replace(" ", "_");
 		try {
-			Gtk.show_uri_on_window(toplevel, @"https://geohashing.site/geohashing/$(hash_id)", Gdk.CURRENT_TIME);
+			Gtk.show_uri_on_window(new GHWHApplication().main_window, @"https://geohashing.site/geohashing/$(hash_id)", Gdk.CURRENT_TIME);
 		} catch(Error e) {
 			// Probably just ignore it
 		}
@@ -42,9 +41,8 @@ class UtilsTab : Gtk.Box {
 
 	[GtkCallback]
 	void open_file_uploader() {
-		var toplevel = (MainWindow)get_toplevel();
 		try {
-			Gtk.show_uri_on_window(toplevel, "https://geohashing.site/geohashing/Special:Upload", Gdk.CURRENT_TIME);
+			Gtk.show_uri_on_window(new GHWHApplication().main_window, "https://geohashing.site/geohashing/Special:Upload", Gdk.CURRENT_TIME);
 		} catch(Error e) {
 			// Probably just ignore it
 		}

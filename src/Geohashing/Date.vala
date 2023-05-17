@@ -17,19 +17,17 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/*
- * Simple class for storing date-only information.
- * Used to avoid passing year/month/day as three numbers.
- *
- * Lucky us don't need to care about timezones!
- * It's assumed that date corresponds to whatever timezone hash is at.
- *
- * Yes, there *is* GLib's Date structure, but it's annoying for us to use.
- * I probably should provide conversion functions tho.
- */
-
-
 namespace Geohashing {
+	/**
+	 * Simple class for storing date-only information.
+	 * Used to avoid passing year/month/day as three numbers.
+	 *
+	 * Lucky us don't need to care about timezones!
+	 * It's assumed that date corresponds to whatever timezone hash is at.
+	 *
+	 * Yes, there *is* GLib's Date structure, but it's annoying for us to use.
+	 * I probably should provide conversion functions tho.
+	 */
 	public class Date : Object {
 		public int year { get; construct set; }
 		public int month { get; construct set; }
@@ -38,7 +36,11 @@ namespace Geohashing {
 		public Date(int year, int month, int day)
 		requires (new DateTime.utc(year, month, day, 0, 0, 0) != null)
 		{
-			Object(year: year, month: month, day: day);
+			Object(
+				year: year,
+				month: month,
+				day: day
+			);
 		}
 
 		public Date.from_string(string src) {

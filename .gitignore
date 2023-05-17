@@ -1,3 +1,4 @@
 org.v1993.geohashingwikihelper.json 
 *.backup
+.buildconfig
 /build/

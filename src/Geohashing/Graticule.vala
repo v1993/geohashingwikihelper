@@ -17,14 +17,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/*
- * Represents graticule. Needs all this fancy handling because of simple
- * reason: existence of negative zero graticules.
- *
- * Special flag is used to represent globalhashes. Ignore all other fields if it is set.
- */
-
 namespace Geohashing {
+	/**
+	 * Represents graticule. Needs all this fancy handling because of simple
+	 * reason: existence of negative zero graticules.
+	 *
+	 * Special flag is used to represent globalhashes. Ignore all other fields if it is set.
+	 */
 	public class Graticule : Object {
 		public bool is_globalhash { get; construct set; default = false; }
 
@@ -38,7 +37,12 @@ namespace Geohashing {
 		requires (absolute_lon >= 0 && absolute_lon < 180)
 		{
 			// Now THIS is annoying
-			Object(negative_lat: negative_lat, absolute_lat: absolute_lat, negative_lon: negative_lon, absolute_lon: absolute_lon);
+			Object(
+				negative_lat: negative_lat,
+				absolute_lat: absolute_lat,
+				negative_lon: negative_lon,
+				absolute_lon: absolute_lon
+			);
 		}
 
 		public Graticule.globalhash() {

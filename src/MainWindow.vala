@@ -44,6 +44,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 	}
 
 	// Ask for confirmation, because a lot of data doesn't persist
+	// NOTE: this will have to become async in GTK4 - so return true in initial call, then close window ourselves if confirmed
 	[GtkCallback]
 	private bool confirm_exit() {
 		var dialog = new Gtk.MessageDialog(this,

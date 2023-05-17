@@ -22,16 +22,25 @@ public class GHWHApplication : Gtk.Application {
 	public MediaWiki wiki;
 	public GLib.File config_directory;
 	public GLib.Settings settings;
+	public MainWindow main_window;
 	public Geohashing.SpecificHash? current_hash {
 		get { return current_hash_real; }
 		set {
 			this.current_hash_real = value;
-			((MainWindow)this.active_window).on_hash_changed();
+			main_window.on_hash_changed();
 		}
 	}
 
 	public GHWHApplication() {
-		Object(application_id: "org.v1993.geohashingwikihelper", flags: ApplicationFlags.FLAGS_NONE);
+		Object(
+			application_id: "org.v1993.geohashingwikihelper",
+			flags: ApplicationFlags.FLAGS_NONE
+		);
+	}
+
+	public override void startup() {
+		base.startup();
+
 		settings = new GLib.Settings(application_id);
 
 		config_directory = GLib.File.new_build_filename(GLib.Environment.get_user_config_dir(), "GeohashingWikiHelper");
@@ -47,18 +56,15 @@ public class GHWHApplication : Gtk.Application {
 		wiki = new MediaWiki("https://geohashing.site/api.php", cookie_jar);
 	}
 
-	construct {
-		activate.connect(on_connect);
-	}
-
-	void on_connect() {
-		if (active_window == null) {
-			new MainWindow(this).present();
+	public override void activate() {
+		if (main_window == null) {
+			main_window = new MainWindow(this);
 		}
+		main_window.present();
 	}
 }
 
 int main (string[] args) {
 	var app = new GHWHApplication();
-	return app.run (args);
+	return app.run(args);
 }
